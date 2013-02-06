@@ -17,8 +17,7 @@
             , selectionList = Element.make('ul', {id: 'content-selected-list'}).appendTo(selection).addClass('ulStyle')
             , fragment = Element.createFragment()
             , insertElementByGroup = function (destinationList, groupName, el) {
-                var indexPosition = destinationList.getChildren().pluck('data-group-item').lastIndexOf(groupName)
-                if (indexPosition != -1) destinationList.insertBefore(el, destinationList.getChildren()[indexPosition+(Craft.Browser.isIE?0:1)])
+                if (destinationList.getChildren().pluck('data-group-item').contains(groupName))destinationList.getChildren().select(function(item){return item.get('data-group-item')==groupName}).reverse()[0].insert({after:el})
                 else destinationList.insert(el)
                 el.removeClass('liItemGroupStyleOver')
             }
@@ -122,6 +121,6 @@
         handleClickOnElement(selectableList, selectionList, true)
         handleClickOnElement(selectionList, selectableList)
         fragment.appendChild(container)
-        nativeSelect.getParent().insertBefore(fragment, nativeSelect.getParent().getChildren()[nativeSelect.getParent().getChildren().pluck('id').lastIndexOf(select.id) + (Craft.Browser.isIE?0:1)])
+        nativeSelect.insert({after:fragment})
     }
 }()
