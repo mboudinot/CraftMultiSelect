@@ -29,7 +29,7 @@
                 }
             }
             , createLi = function (item, groupName, destination) {
-                var currentLi = Element.make('li', {id: item.value}).appendTo(destination ? destination : selectableList).toggleClass('liStyle').set('item', item)
+                var currentLi = Element.make('li', {id: item.value}).appendTo(destination ? destination : selectableList).addClass('liStyle').set('item', item)
                 if (groupName) currentLi.set('data-group-item', groupName).addClass('liItemGroupStyle')
                 Element.make('span', {innerHTML: item.innerHTML}).appendTo(currentLi)
             }
@@ -39,7 +39,7 @@
                     else createLi(item)
                 } else if ('OPTGROUP' == item.nodeName) {
                     var groupName = item.get('label')
-                        , groupLi = Element.make('li').appendTo(selectableList).toggleClass('liStyle liGroupStyle').set('data-group', groupName)
+                        , groupLi = Element.make('li').appendTo(selectableList).toggleClass('liGroupStyle liStyle').set('data-group', groupName)
                     Element.make('span', {innerHTML: item.get('label')}).appendTo(groupLi)
                     item.getChildren().each(function (item) {
                         if (item.selected) {
