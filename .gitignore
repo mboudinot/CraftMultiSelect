@@ -1,5 +1,4 @@
 .idea/
 *.iml
-node_modules/
-sample/
+sample/node_modules/
 
