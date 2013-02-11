@@ -33,8 +33,9 @@
                     })
                 }
             }
+            , counter = 0
             , createLi = function (item, groupName, destination) {
-                var currentLi = Element.make('li', {id: item.value}).appendTo(destination ? destination : selectableList).addClass('liStyle').set('item', item)
+                var currentLi = Element.make('li', {id: item.value, 'data-index': counter++}).appendTo(destination ? destination : selectableList).addClass('liStyle').set('item', item)
                 if (groupName) currentLi.set('data-group-item', groupName).addClass('liItemGroupStyle')
                 Element.make('span', {innerHTML: item.innerHTML}).appendTo(currentLi)
             }
@@ -44,7 +45,7 @@
                     else createLi(item)
                 } else if ('OPTGROUP' == item.nodeName) {
                     var groupName = item.get('label')
-                        , groupLi = Element.make('li').appendTo(selectableList).toggleClass('liGroupStyle liStyle').set('data-group', groupName)
+                        , groupLi = Element.make('li', {'data-index': counter++ , 'data-group': groupName}).appendTo(selectableList).toggleClass('liGroupStyle liStyle')
                     Element.make('span', {innerHTML: item.get('label')}).appendTo(groupLi)
                     item.getChildren().each(function (item) {
                         if (item.selected) {
@@ -89,21 +90,13 @@
                             originList.getChildren().each(function (item) {
                                 if (el.get('data-group') == item.get('data-group-item')) {
                                     insertElementByGroup(destinationList, el.get('data-group'), item)
-                                    if (isResultList) {
-                                        item.get('item').selected = true
-                                    } else {
-                                        item.get('item').selected = false
-                                    }
+                                    item.get('item').selected = isResultList
                                 }
                             })
                             cleanOriginList(originList, el.get('data-group'))
                         }
                     } else {
-                        if (isResultList) {
-                            el.get('item').selected = true
-                        } else {
-                            el.get('item').selected = false
-                        }
+                        el.get('item').selected = isResultList
                         if (el.get('data-group-item')) {
                             var groupName = el.get('data-group-item')
                             var currentGroup = originList.getChildren().select(function (item) {
@@ -115,7 +108,15 @@
                             insertElementByGroup(destinationList, groupName, el)
                             cleanOriginList(originList, groupName)
                         } else {
-                            destinationList.insert(el)
+                            if (!destinationList.getChildren().isEmpty()) {
+                                if(destinationList.getChildren()[0].get('data-index')>el.get('data-index')){
+                                    destinationList.getChildren()[0].insert({before:el})
+                                }else{
+                                    destinationList.getChildren().fold(function (item, next) {
+                                        return (next.get('data-index')>el.get('data-index'))?item:next
+                                    }).insert({after:el})
+                                }
+                            } else destinationList.insert(el)
                         }
                     }
                     el.removeClass('liItemGroupStyleOver')
@@ -126,6 +127,6 @@
         handleClickOnElement(selectableList, selectionList, true)
         handleClickOnElement(selectionList, selectableList)
         fragment.appendChild(container)
-        nativeSelect.insert({after:fragment})
+        nativeSelect.insert({after: fragment})
     }
 })()
