@@ -10,54 +10,57 @@
 
     function createMultiSelect(select, options) {
         var nativeSelect = select.css({display: 'none'})
-            , container = Element.make('div', {id: 'container_' + nativeSelect.id}).addClass('containerStyle')
-            , selectable = Element.make('div', {id: 'selectable_' + nativeSelect.id}).appendTo(container).addClass('selectableDivStyle')
-            , selectableList = Element.make('ul', {id: 'content-list'}).appendTo(selectable).addClass('ulStyle')
-            , selection = Element.make('div', {id: 'selection_' + nativeSelect.id}).appendTo(container).addClass('selectionDivStyle')
-            , selectionList = Element.make('ul', {id: 'content-selected-list'}).appendTo(selection).addClass('ulStyle')
+            , container = Element.make('div').addClass('containerStyle')
+            , selectable = Element.make('div').addClass('selectableDivStyle').appendTo(container)
+            , selectableList = Element.make('ul').addClass('ulStyle').appendTo(selectable)
+            , selection = Element.make('div').addClass('selectionDivStyle').appendTo(container)
+            , selectionList = Element.make('ul').addClass('ulStyle').appendTo(selection)
             , fragment = Element.createFragment()
-            , insertElementByGroup = function (destinationList, groupName, el) {
-                if (destinationList.getChildren().pluck('data-group-item').contains(groupName))destinationList.getChildren().select(function(item){return item.get('data-group-item')==groupName}).reverse()[0].insert({after:el})
-                else destinationList.insert(el)
-                el.removeClass('liItemGroupStyleOver')
-            }
-            , cleanOriginList = function (originList, groupName) {
-                if (!originList.getChildren().pluck('data-group-item').contains(groupName)) {
-                    originList.getChildren().each(function (item) {
-                        if (item.get('data-group') == groupName)item.remove()
-                    })
+            , cleanList = function (list, groupToCheck) {
+                if (!list.getChildren().pluck('data-group-item').contains(groupToCheck)) {
+                    list.getChildren().each(function (item) {if (item.get('data-group') == groupToCheck)item.remove()})
                 }
             }
-            , counter = 0
-            , createLi = function (item, groupName, destination) {
-                var currentLi = Element.make('li', {id: item.value, 'data-index': counter++}).appendTo(destination ? destination : selectableList).addClass('liStyle').set('item', item)
+            , insertElement = function (destinationList, el) {
+                if (!destinationList.getChildren().isEmpty()) {
+                    if (destinationList.getChildren()[0].get('data-index') > el.get('data-index')) {
+                        destinationList.getChildren()[0].insert({before: el})
+                    } else {
+                        destinationList.getChildren().fold(function (item, next) { return (next.get('data-index') > el.get('data-index')) ? item : next}).insert({after: el})
+                    }
+                } else destinationList.insert(el)
+            }
+            , liIndexCounter = 0
+            , createLiItem = function (item, groupName) {
+                var currentLi = Element.make('li', {id: item.value, 'data-index': liIndexCounter++, 'item': item}).addClass('liStyle')
                 if (groupName) currentLi.set('data-group-item', groupName).addClass('liItemGroupStyle')
                 Element.make('span', {innerHTML: item.innerHTML}).appendTo(currentLi)
+                return currentLi
             }
             , handleItem = function (item) {
                 if ('OPTION' == item.nodeName) {
-                    if (item.selected)createLi(item, null, selectionList)
-                    else createLi(item)
+                    if (item.selected)selectionList.insert(createLiItem(item))
+                    else selectableList.insert(createLiItem(item))
                 } else if ('OPTGROUP' == item.nodeName) {
                     var groupName = item.get('label')
-                        , groupLi = Element.make('li', {'data-index': counter++ , 'data-group': groupName}).appendTo(selectableList).toggleClass('liGroupStyle liStyle')
+                        , groupLi = Element.make('li', {'data-index': liIndexCounter++, 'data-group': groupName}).toggleClass('liGroupStyle liStyle').appendTo(selectableList)
                     Element.make('span', {innerHTML: item.get('label')}).appendTo(groupLi)
                     item.getChildren().each(function (item) {
                         if (item.selected) {
                             if (!selectionList.getChildren().pluck('data-group').contains(groupName)) {
-                                selectionList.insert(groupLi.cloneNode(true).set('data-group', groupName))
+                                selectionList.insert(groupLi.cloneNode(true).set('data-group', groupName).set('data-index', groupLi.get('data-index')))
                             }
-                            createLi(item, groupName, selectionList)
-                        } else createLi(item, groupName)
+                            selectionList.insert(createLiItem(item, groupName))
+                        } else selectableList.insert(createLiItem(item, groupName))
                     })
-                    cleanOriginList(selectableList, groupName)
+                    cleanList(selectableList, groupName)
                 }
             }
             , handleClickOnElement = function (originList, destinationList, isResultList) {
                 originList.listen('mouseover', 'li', function (e, el) {
                     if (el.get('data-group')) {
                         if (options.selectableOptgroup) {
-                            el.toggleClass('liGroupStyleOver')
+                            el.addClass('liGroupStyleOver')
                             originList.getChildren().each(function (item) {
                                 if (el.get('data-group') == item.get('data-group-item')) {
                                     item.addClass('liItemGroupStyleOver')
@@ -79,16 +82,15 @@
                 originList.listen('click', 'li', function (e, el) {
                     if (el.get('data-group')) {
                         if (options.selectableOptgroup) {
-                            if (!destinationList.getChildren().pluck('data-group').contains(el.get('data-group'))) {
-                                destinationList.insert(el)
-                            }
+                            if (!destinationList.getChildren().pluck('data-group').contains(el.get('data-group'))) insertElement(destinationList, el)
                             originList.getChildren().each(function (item) {
                                 if (el.get('data-group') == item.get('data-group-item')) {
-                                    insertElementByGroup(destinationList, el.get('data-group'), item)
+                                    insertElement(destinationList, item)
                                     item.get('item').selected = isResultList
+                                    item.removeClass('liItemGroupStyleOver')
                                 }
                             })
-                            cleanOriginList(originList, el.get('data-group'))
+                            cleanList(originList, el.get('data-group'))
                         }
                     } else {
                         el.get('item').selected = isResultList
@@ -98,24 +100,13 @@
                                 return item.get('data-group') == groupName
                             })[0]
                             if (!destinationList.getChildren().pluck('data-group').contains(groupName)) {
-                                destinationList.insert(currentGroup.cloneNode(true).set('data-group', groupName))
+                                insertElement(destinationList, currentGroup.cloneNode(true).set('data-group', groupName).set('data-index', currentGroup.get('data-index')))
                             }
-                            insertElementByGroup(destinationList, groupName, el)
-                            cleanOriginList(originList, groupName)
-                        } else {
-                            if (!destinationList.getChildren().isEmpty()) {
-                                if(destinationList.getChildren()[0].get('data-index')>el.get('data-index')){
-                                    destinationList.getChildren()[0].insert({before:el})
-                                }else{
-                                    destinationList.getChildren().fold(function (item, next) {
-                                        return (next.get('data-index')>el.get('data-index'))?item:next
-                                    }).insert({after:el})
-                                }
-                            } else destinationList.insert(el)
-                        }
+                            insertElement(destinationList, el)
+                            cleanList(originList, groupName)
+                        } else insertElement(destinationList, el)
                     }
-                    el.removeClass('liItemGroupStyleOver')
-                    el.removeClass('liGroupStyleOver')
+                    el.removeClass('liItemGroupStyleOver').removeClass('liGroupStyleOver')
                 })
             }
         nativeSelect.getChildren().each(handleItem)

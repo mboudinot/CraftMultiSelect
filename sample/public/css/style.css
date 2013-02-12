@@ -19,13 +19,12 @@ body {
 .liGroupStyle {
   color: #999;
   cursor: pointer;
-  border-bottom: 0;
+  border: 1px transparent solid;
 }
 .liGroupStyleOver {
   border: 1px #08c solid;
   border-bottom: 1px #fff solid;
   color: #08c;
-  font: bold;
 }
 .ulStyle {
   height: 250px;
