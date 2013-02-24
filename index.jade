@@ -1,0 +1,66 @@
+!!! 5
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible',content='chrome=1')
+        meta(name='description', content='CraftMultiSelect : ')
+        link(rel='stylesheet', type='text/css', media='screen', href='stylesheets/stylesheet.css')
+        link(rel='stylesheet', type='text/css', media='screen', href='stylesheets/CraftMultiSelect.css')
+        script(src='lib/craft.js')
+        script(src='CraftMultiSelect.js')
+        title CraftMultiSelect
+    body
+        #header_wrap.outer
+            header.inner
+                a#forkme_banner(href='https://github.com/camfou/CraftMultiSelect') View on GitHub
+                h1#project_title CraftMultiSelect
+                h2#project_tagline 0.0.1
+        #main_content_wrap.outer
+            section#main_content.inner
+                h1 CraftMultiSelect
+                p Is a MultiSelect visual component based on&nbsp;
+                    a(href='http://craftjs.org') Craft api
+                h2 Demo
+                div: select#my-select(multiple='multiple', name='options_1')
+                        option(value='test_1') test1
+                        option(value='test_2') test2
+                        option(value='test_3') test3
+                        option(value='test_4') test4
+                        option(value='test_5') test5
+                        option(value='test_6') test6
+                        option(value='test_7') test7
+                        option(value='test_8') test8
+                        option(value='test_9') test9
+                    script $('my-select').multiSelect()
+                h2 Usage
+                pre: code Element.multiSelect()
+                h2 Sample
+                pre: code &lt;select id="my-select" multiple="multiple" name="options_1"&gt;
+                    |&lt;option value="test_1" selected="true"&gt;test1&lt;/option&gt;
+                    |&lt;option value="test_2" selected="true"&gt;test2&lt;/option&gt;
+                    |&lt;option value="test_3"&gt;test3&lt;/option&gt;
+                    |&lt;option value="test_4"&gt;test4&lt;/option&gt;
+                    |&lt;option value="test_5"&gt;test5&lt;/option&gt;
+                    |&lt;option value="test_6"&gt;test6&lt;/option&gt;
+                    |&lt;option value="test_7"&gt;test7&lt;/option&gt;
+                    |&lt;option value="test_8" selected="true"&gt;test8&lt;/option&gt;
+                    |&lt;option value="test_9"&gt;test9&lt;/option&gt;
+                    |&lt;/select&gt;
+                    |&lt;script&gt;
+                    |   $('my-select').multiSelect()
+                    |&lt;/script&gt;
+                h2 Build
+                p Builds, lints, minifies.
+                pre: code grunt
+                p Build sample.
+                pre: code grunt sample
+                p Launch test  page.
+                pre: code cd sample
+                    |npm install
+                    |node app
+        #footer_wrap.outer
+            footer.inner
+                p.copyright CraftMultiSelect maintained by&nbsp;
+                    a(href='https://github.com/camfou') camfou
+                p Published with&nbsp;
+                    a(href='http://pages.github.com') GitHub Pages

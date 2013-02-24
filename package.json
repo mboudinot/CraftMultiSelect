@@ -1,5 +1,8 @@
 {
   "name": "CraftMultiSelect",
   "version": "0.0.1",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "grunt-contrib-jade": "~0.3.1"
+  }
 }

@@ -33,10 +33,22 @@ module.exports = function(grunt) {
                 evil: true,
                 browser: true
             }
+        },
+        jade: {
+            compile: {
+                options: {
+                    pretty:true,
+                    data: {
+                        debug: false
+                    }
+                },
+                files: {
+                    "index.html": ["index.jade"]
+                }
+            }
         }
     });
-
-    grunt.registerTask('default', 'concat lint min');
+    grunt.loadNpmTasks('grunt-contrib-jade');
+    grunt.registerTask('default', 'concat lint min jade');
     grunt.registerTask('sample', 'concat concat:sample lint min');
-
 };
