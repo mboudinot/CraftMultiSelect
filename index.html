@@ -1,108 +1,74 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="CraftMultiSelect : " />
-    <link rel="stylesheet" href="sample/public/css/style.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="CraftMultiSelect : ">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/CraftMultiSelect.css">
     <script src="lib/craft.js"></script>
     <script src="CraftMultiSelect.js"></script>
     <title>CraftMultiSelect</title>
   </head>
-
   <body>
-
-    <!-- HEADER -->
     <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/camfou/CraftMultiSelect">View on GitHub</a>
-
-          <h1 id="project_title">CraftMultiSelect</h1>
-          <h2 id="project_tagline">0.0.1</h2>
-
-        </header>
+      <header class="inner"><a id="forkme_banner" href="https://github.com/camfou/CraftMultiSelect">View on GitHub</a>
+        <h1 id="project_title">CraftMultiSelect</h1>
+        <h2 id="project_tagline">0.0.1</h2>
+      </header>
     </div>
-
-    <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>CraftMultiSelect</h1>
-
-<p>Is a MultiSelect visual component based on <a href="http://craftjs.org">Craft api</a>.</p>
-<h2>Demo</h2>
-<div>
-  <select id="my-select" multiple="multiple" name="options_1">
-      <option value="test_1">test1</option>
-      <option value="test_2">test2</option>
-      <option value="test_3">test3</option>
-      <option value="test_4">test4</option>
-      <option value="test_5">test5</option>
-      <option value="test_6">test6</option>
-      <option value="test_7">test7</option>
-      <option value="test_8">test8</option>
-      <option value="test_9">test9</option>
-  </select>
-</div>
-<br>
-<script>
-      $('my-select').multiSelect()
-</script>
-<h2>Usage</h2>
-
-<pre><code>  Element.multiSelect()     
-</code></pre>
-
-<h2>Sample</h2>
-
-<pre><code>&lt;select id="my-select" multiple="multiple" name="options_1"&gt;
-  &lt;option value="test_1" selected="true"&gt;test1&lt;/option&gt;
-  &lt;option value="test_2" selected="true"&gt;test2&lt;/option&gt;
-  &lt;option value="test_3"&gt;test3&lt;/option&gt;
-  &lt;option value="test_4"&gt;test4&lt;/option&gt;
-  &lt;option value="test_5"&gt;test5&lt;/option&gt;
-  &lt;option value="test_6"&gt;test6&lt;/option&gt;
-  &lt;option value="test_7"&gt;test7&lt;/option&gt;
-  &lt;option value="test_8" selected="true"&gt;test8&lt;/option&gt;
-  &lt;option value="test_9"&gt;test9&lt;/option&gt;
+        <p>Is a MultiSelect visual component based on&nbsp;<a href="http://craftjs.org">Craft api</a></p>
+        <h2>Demo</h2>
+        <div>
+          <select id="my-select" multiple="multiple" name="options_1">
+            <option value="test_1">test1</option>
+            <option value="test_2">test2</option>
+            <option value="test_3">test3</option>
+            <option value="test_4">test4</option>
+            <option value="test_5">test5</option>
+            <option value="test_6">test6</option>
+            <option value="test_7">test7</option>
+            <option value="test_8">test8</option>
+            <option value="test_9">test9</option>
+          </select>
+        </div>
+        <script>$('my-select').multiSelect()</script>
+        <h2>Usage</h2>
+        <pre><code>Element.multiSelect()</code></pre>
+        <h2>Sample</h2>
+        <pre>&lt;select id=&quot;my-select&quot; multiple=&quot;multiple&quot; name=&quot;options_1&quot;&gt;
+   &lt;option value=&quot;test_1&quot; selected=&quot;true&quot;&gt;test1&lt;/option&gt;
+   &lt;option value=&quot;test_2&quot; selected=&quot;true&quot;&gt;test2&lt;/option&gt;
+   &lt;option value=&quot;test_3&quot;&gt;test3&lt;/option&gt;
+   &lt;option value=&quot;test_4&quot;&gt;test4&lt;/option&gt;
+   &lt;option value=&quot;test_5&quot;&gt;test5&lt;/option&gt;
+   &lt;option value=&quot;test_6&quot;&gt;test6&lt;/option&gt;
+   &lt;option value=&quot;test_7&quot;&gt;test7&lt;/option&gt;
+   &lt;option value=&quot;test_8&quot; selected=&quot;true&quot;&gt;test8&lt;/option&gt;
+   &lt;option value=&quot;test_9&quot;&gt;test9&lt;/option&gt;
 &lt;/select&gt;
 &lt;script&gt;
-  $('my-select').multiSelect()
-&lt;/script&gt;      
-
-</code></pre>
-
-<h2>Build</h2>
-
-<p>Builds, lints, minifies.</p>
-
-<pre><code>grunt
-</code></pre>
-
-<p>Build sample.</p>
-
-<pre><code>grunt sample  
-</code></pre>
-
-<p>Launch test page.</p>
-
-<pre><code>cd sample
-npm install  
-node app
-</code></pre>
+   $(\'my-select\').multiSelect()
+&lt;/script&gt;</pre>
+        <h2>Build</h2>
+        <p>Builds, lints, minifies.</p>
+        <pre>grunt</pre>
+        <p>Build sample.</p>
+        <pre>grunt sample</pre>
+        <p>Launch test  page.</p>
+        <pre>cd sample
+npm install
+node app</pre>
       </section>
     </div>
-
-    <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">CraftMultiSelect maintained by <a href="https://github.com/camfou">camfou</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">CraftMultiSelect maintained by&nbsp;<a href="https://github.com/camfou">camfou</a></p>
+        <p>Published with&nbsp;<a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    
-
   </body>
 </html>
