@@ -20,7 +20,7 @@
       , cleanList = function (list, groupToCheck){
         if (list.children().select(function(e){return $(e).data('group-item')==groupToCheck}).isEmpty()) {
           list.children().each(function (item){
-            if ($(item).data('groupName') == groupToCheck)item.remove()
+            if ($(item).data('groupName') == groupToCheck)$(item).remove()
           })
         }
       }

@@ -8,12 +8,13 @@ View demo on gh-pages : [CraftMultiSelect](http://camfou.github.com/CraftMultiSe
 ## Usage
 
 ```
-  Element.multiSelect()     
+  Elements.multiSelect()
 ```
 
 ## Sample
 
 ```
+<script src="http://craftjs.org/js/craft.js">
 <select id="my-select" multiple="multiple" name="options_1">
   <option value="test_1" selected="true">test1</option>
   <option value="test_2" selected="true">test2</option>
@@ -39,18 +40,9 @@ Builds, lints, minifies.
 grunt
 ```
 
-## Demo
-
-Build sample.
-
-```
-grunt sample  
-```
-
 Launch test page.
 
 ```
-cd sample
-npm install  
+npm install
 node app
 ```
