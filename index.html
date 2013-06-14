@@ -6,7 +6,7 @@
     <meta name="description" content="CraftMultiSelect : ">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/CraftMultiSelect.css">
-    <script src="lib/craft.js"></script>
+    <script src="http://craftjs.org/js/craft.js"></script>
     <script src="CraftMultiSelect.js"></script>
     <title>CraftMultiSelect</title>
   </head>
@@ -14,7 +14,7 @@
     <div id="header_wrap" class="outer">
       <header class="inner">
         <h1 id="project_title">CraftMultiSelect</h1>
-        <h2 id="project_tagline">0.0.1</h2>
+        <h2 id="project_tagline">0.1.1</h2>
       </header>
     </div>
     <div id="main_content_wrap" class="outer">
@@ -25,43 +25,59 @@
         <h2>Demo</h2>
         <div>
           <select id="my-select" multiple="multiple" name="options_1">
-            <option value="test_1">test1</option>
-            <option value="test_2">test2</option>
+            <option value="test_1" selected="true">test1</option>
+            <option value="test_2" selected="true">test2</option>
             <option value="test_3">test3</option>
             <option value="test_4">test4</option>
             <option value="test_5">test5</option>
             <option value="test_6">test6</option>
             <option value="test_7">test7</option>
-            <option value="test_8">test8</option>
+            <option value="test_8" selected="true">test8</option>
             <option value="test_9">test9</option>
+            <script>$('#my-select').multiSelect()</script>
           </select>
         </div>
-        <script>$('my-select').multiSelect()</script>
+        <div>
+          <select id="my-select2" multiple="multiple" name="options_2">
+            <optgroup label="Groupe 1">
+              <option value="test_1">test1</option>
+              <option value="test_2">test2</option>
+              <option value="test_3">test3</option>
+              <option value="test_4">test4</option>
+            </optgroup>
+            <optgroup label="Groupe 2">
+              <option value="test_5">test5</option>
+              <option value="test_6">test6</option>
+              <option value="test_7">test7</option>
+              <option value="test_8">test8</option>
+              <option value="test_9">test9</option>
+            </optgroup>
+            <script>$('#my-select2').multiSelect()</script>
+          </select>
+        </div>
         <h2>Usage</h2>
-        <pre><code>Element.multiSelect()</code></pre>
+        <pre><code>Elements.multiSelect()</code></pre>
         <h2>Sample</h2>
-        <pre>&lt;select id=&quot;my-select&quot; multiple=&quot;multiple&quot; name=&quot;options_1&quot;&gt;
-   &lt;option value=&quot;test_1&quot; selected=&quot;true&quot;&gt;test1&lt;/option&gt;
-   &lt;option value=&quot;test_2&quot; selected=&quot;true&quot;&gt;test2&lt;/option&gt;
-   &lt;option value=&quot;test_3&quot;&gt;test3&lt;/option&gt;
-   &lt;option value=&quot;test_4&quot;&gt;test4&lt;/option&gt;
-   &lt;option value=&quot;test_5&quot;&gt;test5&lt;/option&gt;
-   &lt;option value=&quot;test_6&quot;&gt;test6&lt;/option&gt;
-   &lt;option value=&quot;test_7&quot;&gt;test7&lt;/option&gt;
-   &lt;option value=&quot;test_8&quot; selected=&quot;true&quot;&gt;test8&lt;/option&gt;
-   &lt;option value=&quot;test_9&quot;&gt;test9&lt;/option&gt;
+        <pre>&lt;script src=&quot;http://craftjs.org/js/craft.js&quot;&gt;
+&lt;select id=&quot;my-select&quot; multiple=&quot;multiple&quot; name=&quot;options_1&quot;&gt;
+&lt;option value=&quot;test_1&quot; selected=&quot;true&quot;&gt;test1&lt;/option&gt;
+&lt;option value=&quot;test_2&quot; selected=&quot;true&quot;&gt;test2&lt;/option&gt;
+&lt;option value=&quot;test_3&quot;&gt;test3&lt;/option&gt;
+&lt;option value=&quot;test_4&quot;&gt;test4&lt;/option&gt;
+&lt;option value=&quot;test_5&quot;&gt;test5&lt;/option&gt;
+&lt;option value=&quot;test_6&quot;&gt;test6&lt;/option&gt;
+&lt;option value=&quot;test_7&quot;&gt;test7&lt;/option&gt;
+&lt;option value=&quot;test_8&quot; selected=&quot;true&quot;&gt;test8&lt;/option&gt;
+&lt;option value=&quot;test_9&quot;&gt;test9&lt;/option&gt;
 &lt;/select&gt;
 &lt;script&gt;
-   $(\'my-select\').multiSelect()
+$(\'my-select\').multiSelect()
 &lt;/script&gt;</pre>
         <h2>Build</h2>
         <p>Builds, lints, minifies.</p>
         <pre>grunt</pre>
-        <p>Build sample.</p>
-        <pre>grunt sample</pre>
         <p>Launch test  page.</p>
-        <pre>cd sample
-npm install
+        <pre>npm install
 node app</pre>
       </section>
     </div>

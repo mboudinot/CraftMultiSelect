@@ -10,11 +10,6 @@ module.exports = function(grunt) {
                 src: ['<banner>','src/multi.js'],
                 dest: 'CraftMultiSelect.js',
                 separator : '\n'
-            },
-            sample: {
-                src: ['lib/craft.js','<banner>','src/multi.js'],
-                dest: 'sample/public/CraftMultiSelect-standalone.js',
-                separator : '\n'
             }
         },
         min: {
@@ -50,5 +45,4 @@ module.exports = function(grunt) {
     });
     grunt.loadNpmTasks('grunt-contrib-jade');
     grunt.registerTask('default', 'concat lint min jade');
-    grunt.registerTask('sample', 'concat concat:sample lint min');
 };

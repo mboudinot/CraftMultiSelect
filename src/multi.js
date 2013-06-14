@@ -1,118 +1,128 @@
-;(function () {
-    Element.extend({
-        'multiSelect': function (options) {
-            var self = this
-            if (!options)options = {selectableOptgroup: true}
-            if (self.nodeName == 'SELECT')createMultiSelect(self, options)
-            return self
-        }
-    })
-
-    function createMultiSelect(select, options) {
-        var nativeSelect = select.css({display: 'none'})
-            , container = Element.make('div').addClass('containerStyle')
-            , selectable = Element.make('div').addClass('selectableDivStyle').appendTo(container)
-            , selectableList = Element.make('ul').addClass('ulStyle').appendTo(selectable)
-            , selection = Element.make('div').addClass('selectionDivStyle').appendTo(container)
-            , selectionList = Element.make('ul').addClass('ulStyle').appendTo(selection)
-            , fragment = Element.createFragment()
-            , cleanList = function (list, groupToCheck) {
-                if (!list.getChildren().pluck('data-group-item').contains(groupToCheck)) {
-                    list.getChildren().each(function (item) {if (item.get('data-group') == groupToCheck)item.remove()})
-                }
-            }
-            , insertElement = function (destinationList, el) {
-                if (!destinationList.getChildren().isEmpty()) {
-                    if (destinationList.getChildren()[0].get('data-index') > el.get('data-index')) {
-                        destinationList.getChildren()[0].insert({before: el})
-                    } else {
-                        destinationList.getChildren().fold(function (item, next) { return (next.get('data-index') > el.get('data-index')) ? item : next}).insert({after: el})
-                    }
-                } else destinationList.insert(el)
-            }
-            , liIndexCounter = 0
-            , createLiItem = function (item, groupName) {
-                var currentLi = Element.make('li', {id: item.value, 'data-index': liIndexCounter++, 'item': item}).addClass('liStyle')
-                if (groupName) currentLi.set('data-group-item', groupName).addClass('liItemGroupStyle')
-                Element.make('span', {innerHTML: item.innerHTML}).appendTo(currentLi)
-                return currentLi
-            }
-            , handleItem = function (item) {
-                if ('OPTION' == item.nodeName) {
-                    if (item.selected)selectionList.insert(createLiItem(item))
-                    else selectableList.insert(createLiItem(item))
-                } else if ('OPTGROUP' == item.nodeName) {
-                    var groupName = item.get('label')
-                        , groupLi = Element.make('li', {'data-index': liIndexCounter++, 'data-group': groupName}).toggleClass('liGroupStyle liStyle').appendTo(selectableList)
-                    Element.make('span', {innerHTML: item.get('label')}).appendTo(groupLi)
-                    item.getChildren().each(function (item) {
-                        if (item.selected) {
-                            if (!selectionList.getChildren().pluck('data-group').contains(groupName)) {
-                                selectionList.insert(groupLi.cloneNode(true).set('data-group', groupName).set('data-index', groupLi.get('data-index')))
-                            }
-                            selectionList.insert(createLiItem(item, groupName))
-                        } else selectableList.insert(createLiItem(item, groupName))
-                    })
-                    cleanList(selectableList, groupName)
-                }
-            }
-            , handleClickOnElement = function (originList, destinationList, isResultList) {
-                originList.listen('mouseover', 'li', function (e, el) {
-                    if (el.get('data-group')) {
-                        if (options.selectableOptgroup) {
-                            el.addClass('liGroupStyleOver')
-                            originList.getChildren().each(function (item) {
-                                if (el.get('data-group') == item.get('data-group-item')) {
-                                    item.addClass('liItemGroupStyleOver')
-                                }
-                            })
-                        }
-                    } else el.addClass('liItemGroupStyleOver')
-                })
-                originList.listen('mouseout', 'li', function (e, el) {
-                    if (options.selectableOptgroup && el.get('data-group')) {
-                        el.removeClass('liGroupStyleOver')
-                        originList.getChildren().each(function (item) {
-                            if (el.get('data-group') == item.get('data-group-item')) {
-                                item.removeClass('liItemGroupStyleOver')
-                            }
-                        })
-                    } else el.removeClass('liItemGroupStyleOver')
-                })
-                originList.listen('click', 'li', function (e, el) {
-                    if (el.get('data-group')) {
-                        if (options.selectableOptgroup) {
-                            if (!destinationList.getChildren().pluck('data-group').contains(el.get('data-group'))) insertElement(destinationList, el)
-                            originList.getChildren().each(function (item) {
-                                if (el.get('data-group') == item.get('data-group-item')) {
-                                    insertElement(destinationList, item)
-                                    item.get('item').selected = isResultList
-                                    item.removeClass('liItemGroupStyleOver')
-                                }
-                            })
-                            cleanList(originList, el.get('data-group'))
-                        }
-                    } else {
-                        el.get('item').selected = isResultList
-                        if (el.get('data-group-item')) {
-                            var groupName = el.get('data-group-item')
-                            var currentGroup = originList.getChildren().select(function (item) {
-                                return item.get('data-group') == groupName
-                            })[0]
-                            if (!destinationList.getChildren().pluck('data-group').contains(groupName)) {
-                                insertElement(destinationList, currentGroup.cloneNode(true).set('data-group', groupName).set('data-index', currentGroup.get('data-index')))
-                            }
-                            insertElement(destinationList, el)
-                            cleanList(originList, groupName)
-                        } else insertElement(destinationList, el)
-                    }
-                    el.removeClass('liItemGroupStyleOver').removeClass('liGroupStyleOver')
-                })
-            }
-        nativeSelect.getChildren().each(handleItem)
-        handleClickOnElement(selectableList, selectionList, true)
-        handleClickOnElement(selectionList, selectableList)
-        fragment.appendChild(container)
-        nativeSelect.insert({after: fragment})
+;(function (){
+  Elements.implement({
+    'multiSelect': function (options){
+      var self = this
+      if (!options)options = {selectableOptgroup: true}
+      if (self[0].nodeName == 'SELECT')createMultiSelect(self[0], options)
+      return self
     }
+  })
+
+  function createMultiSelect(select, options){
+    select = $(select)
+    var nativeSelect = select.css({display: 'none'})
+      , container = Elements.create('div').addClass('containerStyle')
+      , selectable = Elements.create('div').addClass('selectableDivStyle').appendTo(container)
+      , selectableList = Elements.create('ul').addClass('ulStyle').appendTo(selectable)
+      , selection = Elements.create('div').addClass('selectionDivStyle').appendTo(container)
+      , selectionList = Elements.create('ul').addClass('ulStyle').appendTo(selection)
+      , fragment = Elements.fragment()
+      , cleanList = function (list, groupToCheck){
+        if (list.children().select(function(e){return $(e).data('group-item')==groupToCheck}).isEmpty()) {
+          list.children().each(function (item){
+            if ($(item).data('groupName') == groupToCheck)item.remove()
+          })
+        }
+      }
+      , insertElement = function (destinationList, el){
+        if (!destinationList.children().isEmpty()) {
+          var firstchild = $(destinationList.children()[0]);
+          if (parseInt(firstchild.data('index'),10) > parseInt($(el).data('index'),10)) {
+            firstchild.insertBefore(el)
+          } else {
+            $(destinationList.children().fold(function (item, next){
+              return (parseInt($(next).data('index'),10) > parseInt($(el).data('index'),10)) ? item : next
+            })).insertAfter(el)
+          }
+        } else destinationList.append(el)
+      }
+      , liIndexCounter = 0
+      , createLiItem = function (item, groupName){
+        var currentLi = Elements.create('li', {id: item.value}).addClass('liStyle').data('index', liIndexCounter++)
+        if (groupName) currentLi.data('group-item', groupName).addClass('liItemGroupStyle')
+        Elements.create('span', {innerHTML: item.innerHTML}).appendTo(currentLi)
+        return currentLi
+      }
+      , handleItem = function (item){
+        if ('OPTION' == item.nodeName) {
+          if (item.selected)selectionList.append(createLiItem(item))
+          else selectableList.append(createLiItem(item))
+        } else if ('OPTGROUP' == item.nodeName) {
+          var groupName = item.label
+            , groupLi = Elements.create('li').toggleClass('liGroupStyle liStyle').data('index',liIndexCounter++).data('groupName',groupName).appendTo(selectableList)
+          groupLi.append(Elements.create('span', {innerHTML: item.label}))
+          $(item).children().each(function (item){
+            if (item.selected) {
+              if (selectionList.children().select(function(e){return $(e).data('groupName')==groupName}).isEmpty()) {
+                selectionList.append(groupLi.clone(true).data('groupName', groupName).data('index', groupLi.data('index')))
+              }
+              selectionList.append(createLiItem(item, groupName))
+            } else selectableList.append(createLiItem(item, groupName))
+          })
+          cleanList(selectableList, groupName)
+        }
+      }
+      , handleClickOnElement = function (originList, destinationList, isResultList){
+        originList.listen('mouseover', 'li', function (e){
+          var el =  $(this)
+          if (el.data('groupName')) {
+            if (options.selectableOptgroup) {
+              el.addClass('liGroupStyleOver')
+              originList.children().each(function (item){
+                if (el.data('groupName') == $(item).data('group-item')) {
+                  $(item).addClass('liItemGroupStyleOver')
+                }
+              })
+            }
+          } else el.addClass('liItemGroupStyleOver')
+        })
+        originList.listen('mouseout', 'li', function (e){
+          var el =  $(this)
+          if (options.selectableOptgroup && el.data('groupName')) {
+            el.removeClass('liGroupStyleOver')
+            originList.children().each(function (item){
+              if (el.data('groupName') == $(item).data('group-item')) {
+                $(item).removeClass('liItemGroupStyleOver')
+              }
+            })
+          } else el.removeClass('liItemGroupStyleOver')
+        })
+        originList.listen('click', 'li', function (e){
+          var el = $(this)
+            , groupName
+          if (groupName=el.data('groupName')) {
+            if (options.selectableOptgroup) {
+              if (destinationList.children().select(function(e){return $(e).data('groupName')==groupName}).isEmpty()) insertElement(destinationList, this)
+              originList.children().each(function (item){
+                if (groupName == $(item).data('group-item')) {
+                  insertElement(destinationList, item)
+                  if(!$(item).data('groupName'))$('option[value=' + item.id + ']')[0].selected = isResultList
+                  $(item).removeClass('liItemGroupStyleOver')
+                }
+              })
+              cleanList(originList, groupName)
+            }
+          }
+          else {
+            $('option[value=' + this.id + ']')[0].selected = isResultList
+            if (groupName=el.data('group-item')) {
+              var currentGroup = $(originList.children().select(function (item){
+                return $(item).data('groupName') == groupName
+              })[0])
+              if (destinationList.children().select(function(e){return $(e).data('groupName')==groupName}).isEmpty()) {
+                insertElement(destinationList, currentGroup.clone(true).data('groupName', groupName).data('index', currentGroup.data('index')))
+              }
+              insertElement(destinationList, this)
+              cleanList(originList, groupName)
+            } else insertElement(destinationList, el)
+          }
+          el.removeClass('liItemGroupStyleOver').removeClass('liGroupStyleOver')
+        })
+      }
+    nativeSelect.children().each(handleItem)
+    handleClickOnElement(selectableList, selectionList, true)
+    handleClickOnElement(selectionList, selectableList)
+    fragment.appendChild(container[0])
+    $(nativeSelect).insertAfter(fragment)
+  }
 })()
