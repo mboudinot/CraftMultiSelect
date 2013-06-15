@@ -31,6 +31,7 @@ body {
   width: 160px;
   border: 1px solid;
   list-style-type: none;
+  margin-top: 0;
   padding: 0;
   border-radius: 4px;
   overflow-y: auto;
@@ -54,4 +55,12 @@ body {
 .selectionDivStyle {
   float: left;
   overflow-y: auto;
+}
+
+.filterStyle {
+  width: 150px;
+  border: 1px solid;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 4px;
 }

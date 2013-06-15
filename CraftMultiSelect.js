@@ -7,7 +7,7 @@
   Elements.implement({
     'multiSelect': function (options){
       var self = this
-      if (!options)options = {selectableOptgroup: true}
+      if (!options)options = {selectableOptgroup: true,filters: false}
       if (self[0].nodeName == 'SELECT')createMultiSelect(self[0], options)
       return self
     }
@@ -124,7 +124,22 @@
           el.removeClass('liItemGroupStyleOver').removeClass('liGroupStyleOver')
         })
       }
+      , addFilterInput = function(list){
+        var filter = Elements.create('input',{'type':'text'}).addClass('filterStyle')
+        filter.listen('keyup',function(){
+          var currentInput = this.value
+          list.children().each(function(item){
+            if(item.innerHTML.match(currentInput))$(item).css({'display':'block'})
+            else if(!$(item).data('groupName'))$(item).css({'display':'none'})
+          })
+        })
+        list.insertBefore(filter)
+      }
     nativeSelect.children().each(handleItem)
+    if(options.filters){
+      addFilterInput(selectableList)
+      addFilterInput(selectionList)
+    }
     handleClickOnElement(selectableList, selectionList, true)
     handleClickOnElement(selectionList, selectableList)
     fragment.appendChild(container[0])
