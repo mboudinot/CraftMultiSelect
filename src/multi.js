@@ -7,10 +7,10 @@
       return self
     }
   })
-
+  var mainSelect
   function createMultiSelect(select, options){
-    select = $(select)
-    var nativeSelect = select.css({display: 'none'})
+    mainSelect=$(select)
+    var nativeSelect = mainSelect.css({display: 'none'})
       , container = Elements.create('div').addClass('containerStyle')
       , selectable = Elements.create('div').addClass('selectableDivStyle').appendTo(container)
       , selectableList = Elements.create('ul').addClass('ulStyle').appendTo(selectable)
@@ -96,7 +96,7 @@
               originList.children().each(function (item){
                 if (groupName == $(item).data('group-item')) {
                   insertElement(destinationList, item)
-                  if(!$(item).data('groupName'))$('option[value=' + item.id + ']')[0].selected = isResultList
+                  if(!$(item).data('groupName'))$('#'+mainSelect[0].id+' option[value=' + item.id + ']')[0].selected = isResultList
                   $(item).removeClass('liItemGroupStyleOver')
                 }
               })
@@ -104,7 +104,7 @@
             }
           }
           else {
-            $('option[value=' + this.id + ']')[0].selected = isResultList
+            $('#'+mainSelect[0].id+' option[value=' + this.id + ']')[0].selected = isResultList
             if (groupName=el.data('group-item')) {
               var currentGroup = $(originList.children().select(function (item){
                 return $(item).data('groupName') == groupName
