@@ -1,5 +1,3 @@
 .idea/
 *.iml
-sample/node_modules/
-sample/public/*.js
 node_modules/
