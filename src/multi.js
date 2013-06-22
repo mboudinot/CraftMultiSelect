@@ -1,8 +1,8 @@
-;(function (){
+;(function ($){
   Elements.implement({
     'multiSelect': function (options){
       var self = this
-      if (!options)options = {selectableOptgroup: true,filters: false}
+      options = options || {}
       if (self[0].nodeName == 'SELECT')createMultiSelect(self[0], options)
       return self
     }
@@ -120,7 +120,7 @@
         })
       }
       , addFilterInput = function(list){
-        var filter = Elements.create('input',{'type':'text'}).addClass('filterStyle')
+        var filter = Elements.create('input',{'type':'text','placeholder':'Filter'}).addClass('filterStyle')
         filter.listen('keyup',function(){
           var currentInput = this.value
           list.children().each(function(item){
@@ -131,6 +131,12 @@
         list.insertBefore(filter)
       }
     nativeSelect.children().each(handleItem)
+    if(options.selectableHeader){
+      selectableList.insertBefore(Elements.from(options.selectableHeader).addClass('headerStyle'))
+    }
+    if(options.selectionHeader){
+      selectionList.insertBefore(Elements.from(options.selectionHeader).addClass('headerStyle'))
+    }
     if(options.filters){
       addFilterInput(selectableList)
       addFilterInput(selectionList)
@@ -140,4 +146,4 @@
     fragment.appendChild(container[0])
     $(nativeSelect).insertAfter(fragment)
   }
-})()
+})(Craft)

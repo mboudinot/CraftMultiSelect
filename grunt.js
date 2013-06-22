@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         meta : {
             banner : "/*!\n CraftMultiSelect.js" +
-                "\n 0.0.1 \n*/"
+                "\n 0.1.1 \n*/"
         },
         concat: {
             dist: {
