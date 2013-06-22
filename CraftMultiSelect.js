@@ -30,6 +30,7 @@
         }
       }
       , insertElement = function (destinationList, el){
+        $(el).css({'display':'block'})
         if (!destinationList.children().isEmpty()) {
           var firstchild = $(destinationList.children()[0]);
           if (parseInt(firstchild.data('index'),10) > parseInt($(el).data('index'),10)) {
@@ -130,7 +131,7 @@
           var currentInput = this.value
           list.children().each(function(item){
             if(item.innerHTML.match(currentInput))$(item).css({'display':'block'})
-            else if(!$(item).data('groupName'))$(item).css({'display':'none'})
+            else $(item).css({'display':'none'})
           })
         })
         list.insertBefore(filter)
