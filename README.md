@@ -1,6 +1,7 @@
 CraftMultiSelect
 ================
 
+
 Is a MultiSelect visual component based on [Craft api](http://craftjs.org).
 
 View demo on gh-pages : [CraftMultiSelect](http://camfou.github.com/CraftMultiSelect/)
